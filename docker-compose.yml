@@ -1,0 +1,33 @@
+version: '1.5'
+services:
+  argussss:
+    build: .
+    image: argus:latest
+    container_name: argus_test
+    stdin_open: true        # Keep STDIN open for interactive sessions
+    tty: true     
+    ports:
+      - 8888:8888          
+    networks:
+      - general
+    ipc: host
+    volumes:
+      - ./workspace:/workspace  # Map a local directory to /workspace in the container
+      - "/tmp/.X11-unix:/tmp/.X11-unix"  # Allow GUI applications (for webcam)
+    environment:
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1  # Fix X11 display issues
+      # - QT_PLUGIN_PATH=/usr/lib/x86_64-linux-gnu/qt5/plugins  # Adjust as needed
+    devices:
+      - "/dev/dri:/dev/dri"
+      - "/dev/bus/usb:/dev/bus/usb"  # Grant access to Intel NCS2
+    device_cgroup_rules:
+      - 'c 189:* rmw'
+    privileged: true        # Give the container privileged access (required for some OpenVINO hardware setups)
+
+networks:
+  general:
+    attachable: true
+    internal: false
+    driver: bridge
+

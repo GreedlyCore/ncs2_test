@@ -1,0 +1,6 @@
+openvino_env
+/.vscode
+/references/__pycache__
+/ncs2_test/workspace/app/__pycache__
+/ncs2_test/workspace/app/public
+references/utils/__pycache__/
